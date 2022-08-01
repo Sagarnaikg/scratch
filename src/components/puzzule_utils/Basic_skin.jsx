@@ -2,7 +2,10 @@ import React from "react";
 
 const BasicSkin = (props) => {
   return (
-    <div className="block w-fit text-sm text-white bg-blue-500 rounded-md">
+    <div
+      onClick={() => props.setClicked(true)}
+      className="block w-fit text-sm text-white bg-blue-500 rounded-md"
+    >
       <div className="grid-row-1 text-xs font-semibold  p-2 rounded-b-sm">
         {props.children}
       </div>
