@@ -26,6 +26,22 @@ const TurnXDeg = () => {
   );
 };
 
+const PointToDeg = () => {
+  const [clicked, setClicked] = useState(false);
+
+  return (
+    <BasicSkin setClicked={setClicked}>
+      point in direction
+      <PuzzuleInputBox
+        setClicked={setClicked}
+        clicked={clicked}
+        k={"x-turn-in"}
+        id={"x-trun"}
+      />
+    </BasicSkin>
+  );
+};
+
 const TurnAntiXDeg = () => {
   const [clicked, setClicked] = useState(false);
 
@@ -44,4 +60,4 @@ const TurnAntiXDeg = () => {
   );
 };
 
-export { TurnXDeg, TurnAntiXDeg };
+export { TurnXDeg, TurnAntiXDeg, PointToDeg };

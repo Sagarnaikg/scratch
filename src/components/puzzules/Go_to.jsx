@@ -15,23 +15,19 @@ const GoTo = () => {
 
 const GoToXtoY = () => {
   const [clicked, setClicked] = useState(false);
+  const [x, setX] = useState(10);
+  const [y, setY] = useState(10);
+
+  useState(() => {
+    console.log(x);
+    console.log(y);
+  }, [x, y]);
 
   return (
     <BasicSkin setClicked={setClicked}>
       go to x:
-      <PuzzuleInputBox
-        clicked={clicked}
-        setClicked={setClicked}
-        k={"x"}
-        id="xy"
-      />{" "}
-      y:
-      <PuzzuleInputBox
-        setClicked={setClicked}
-        clicked={clicked}
-        k={"y"}
-        id="xy"
-      />
+      <PuzzuleInputBox setCor={clicked ? setX : () => {}} k={"xy"} id="xy" /> y:
+      <PuzzuleInputBox setCor={clicked ? setY : () => {}} k={"yx"} id="xy" />
     </BasicSkin>
   );
 };

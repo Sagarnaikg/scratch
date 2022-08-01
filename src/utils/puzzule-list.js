@@ -2,8 +2,8 @@
 import { GlideToDropDown } from "../components/puzzules/Glide"
 import { GoTo, GoToXtoY } from "../components/puzzules/Go_to"
 import { PinDirection, PinXPosition, PinYPosition } from "../components/puzzules/Motion_pins"
-import MoveXSteps from "../components/puzzules/Move_x_steps"
-import { TurnAntiXDeg, TurnXDeg } from "../components/puzzules/Turn_Deg"
+import MoveXSteps, { ChangeXBy, ChangeYBy, SetX, SetY } from "../components/puzzules/Move_x_steps"
+import { PointToDeg, TurnAntiXDeg, TurnXDeg } from "../components/puzzules/Turn_Deg"
 
 const puzzleList = {
     motion: {
@@ -13,6 +13,11 @@ const puzzleList = {
             <TurnXDeg />,
             <TurnAntiXDeg />,
             <GoToXtoY />,
+            <ChangeXBy />,
+            <ChangeYBy />,
+            <PointToDeg />,
+            <SetX />,
+            <SetY />
         ],
         pins: [
             <PinXPosition />,

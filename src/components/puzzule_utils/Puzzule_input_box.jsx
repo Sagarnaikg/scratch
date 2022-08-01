@@ -10,6 +10,7 @@ const PuzzuleInputBox = ({
   placeholder = "",
   className = "w-10",
   setClicked = () => {},
+  setCor,
   clicked = false,
 }) => {
   let { list, setSpriteList } = useContext(SpriteList);
@@ -17,6 +18,10 @@ const PuzzuleInputBox = ({
   const [value, setValue] = useState(10);
 
   useEffect(() => {
+    if (k === "xy" || k === "yx") {
+      setCor(value);
+    }
+
     if (clicked) {
       let index = 0;
 
@@ -31,8 +36,24 @@ const PuzzuleInputBox = ({
         list[index].properties.x += value;
       }
 
+      if (k === "y") {
+        list[index].properties.y += value;
+      }
+
+      if (k === "x-set") {
+        list[index].properties.x = value;
+      }
+
+      if (k === "y-set") {
+        list[index].properties.y = value;
+      }
+
       if (k === "x-turn") {
         list[index].properties.angle += value;
+      }
+
+      if (k === "x-turn-in") {
+        list[index].properties.angle = value;
       }
 
       if (k === "x-anti-turn") {
