@@ -22,6 +22,22 @@ body {
   position: relative;
 }
 
+.display,
+.sprites-controller {
+  height: 90%;
+  min-height: 47.3vh;
+}
+
+.sprites-grid {
+  max-height: 80%;
+  overflow-y: scroll;
+}
+
+/* .display {
+  height: 100%;
+  overflow: hidden;
+} */
+
 .drop-area {
   min-width: 100px;
   min-height: 200px;
@@ -56,4 +72,14 @@ input::-webkit-inner-spin-button {
 
 .box-end {
   width: 100%;
+}
+
+.sm-img svg {
+  height: 60px;
+  width: 50px;
+}
+
+.out-image-size svg {
+  height: 100px;
+  width: 80px;
 }

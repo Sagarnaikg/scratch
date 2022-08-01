@@ -20,7 +20,7 @@ const puzzleList = {
             <PinDirection />
         ]
     },
-    looks: {
+    /* looks: {
         title: "Looks",
         blocks: []
     },
@@ -31,7 +31,7 @@ const puzzleList = {
     control: {
         title: "Control",
         blocks: []
-    },
+    }, */
 }
 
 export { puzzleList }

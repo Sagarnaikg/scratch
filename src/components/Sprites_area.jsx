@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   faArrowsLeftRight,
@@ -9,19 +10,114 @@ import {
   faXmark,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import CatSprite from "./Others/Cat_sprite";
 import Icon from "./Others/Icon";
+import { spritesList } from "../utils/sprites-list";
+import { SpriteList } from "../utils/context-api/sprites_list_context";
+import { ActiveSrite } from "../utils/context-api/active_sprite_context";
 
 let InputField = ({
   className = "",
+  toggle = false,
   type = "text",
   id = "",
   placeholder = "",
 }) => {
-  return (
+  id = id.toLowerCase();
+  let { sprite, setActiveSprite } = useContext(ActiveSrite);
+  let { list, setSpriteList } = useContext(SpriteList);
+  const [value, setValue] = useState("");
+
+  console.log("insize");
+  console.log(sprite.name);
+
+  let index = 0;
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id === sprite.id) {
+      index = i;
+      break;
+    }
+  }
+
+  useEffect(() => {
+    if (id === "name") {
+      setValue(sprite.name);
+    }
+    if (id === "x") {
+      setValue(sprite.properties.x);
+    }
+    if (id === "y") {
+      setValue(sprite.properties.y);
+    }
+    if (id === "size") {
+      setValue(sprite.properties.scale);
+    }
+    if (id === "direction") {
+      setValue(sprite.properties.angle);
+    }
+  });
+
+  let onChange = (text, state) => {
+    if (id === "name" && !text) return;
+
+    if (id === "display") {
+      if (state) list[index].properties.display = "block";
+      else list[index].properties.display = "none";
+    }
+
+    if (id === "name") {
+      list[index].name = text;
+    }
+
+    if (id === "x") {
+      list[index].properties.x = parseFloat(text);
+    }
+
+    if (id === "y") {
+      list[index].properties.y = parseFloat(text);
+    }
+
+    if (id === "size") {
+      list[index].properties.scale = parseFloat(text);
+    }
+
+    if (id === "direction") {
+      list[index].properties.angle = parseFloat(text);
+    }
+
+    setValue(text);
+    setSpriteList([...list]);
+  };
+
+  return toggle ? (
+    <div className="relative flex ml-2">
+      <div
+        onClick={() => onChange(" ", true)}
+        className="show-btn bg-white py-1 px-2 rounded border-2 hover:border-blue-400"
+      >
+        <Icon
+          size="sm"
+          icon={faEye}
+          color={sprite.properties.display === "block" ? "blue" : "gray"}
+        />
+      </div>
+      <div
+        onClick={() => onChange(" ", false)}
+        className="show-btn bg-white py-1 px-2 rounded border-2 hover:border-blue-400"
+      >
+        <Icon
+          size="sm"
+          icon={faEyeSlash}
+          color={sprite.properties.display === "hidden" ? "blue" : "gray"}
+        />
+      </div>
+    </div>
+  ) : (
     <input
+      onChange={(el) => onChange(el.target.value)}
       type={type}
       id={id}
+      value={value}
       placeholder={placeholder}
       className={`${className} text-xs border-2 border-blue-200 rounded-full py-2 px-3 focus:border-blue-500  focus:outline-none`}
     />
@@ -36,6 +132,11 @@ InputField.protoTypes = {
 };
 
 let SpritesEditor = () => {
+  let { sprite, setActiveSprite } = useContext(ActiveSrite);
+
+  console.log("editor");
+  console.log(sprite.name);
+
   return (
     <div className="controls h-min bg-blue-200 py-2 px-4">
       <div className="grid-row-1 flex justify-between">
@@ -69,18 +170,7 @@ let SpritesEditor = () => {
       <div className="grid-row-1 flex justify-between mt-2">
         <div className="flex items-center">
           <label className="text-sm font-medium">Show</label>
-          <div className="relative flex ml-2">
-            <div className="show-btn bg-white py-1 px-2 rounded border-2 hover:border-blue-400">
-              <Icon size="sm" icon={faEye} color={true ? "blue" : "gray"} />
-            </div>
-            <div className="show-btn bg-white py-1 px-2 rounded border-2 hover:border-blue-400">
-              <Icon
-                size="sm"
-                icon={faEyeSlash}
-                color={false ? "blue" : "gray"}
-              />
-            </div>
-          </div>
+          <InputField toggle={true} id="display" />
         </div>
         <div className="flex items-center">
           <label className="text-sm font-medium ml-1">Size</label>
@@ -105,24 +195,38 @@ let SpritesEditor = () => {
   );
 };
 
-let SpriteCard = ({ image, name, state = false }) => {
+let SpriteCard = ({ image, name, state = false, setShowModal }) => {
+  let { list, setSpriteList } = useContext(SpriteList);
+
   return (
     <div
-      className={`sprite-card flex-col w-fit border-2 ${
+      onClick={() => {
+        let item = {
+          id: uuidv4(),
+          name: name,
+          image: image,
+          properties: {
+            x: 0,
+            y: 0,
+            angle: 0,
+            scale: 1,
+            display: "block",
+          },
+          code: {},
+        };
+        setSpriteList([...list, item]);
+        setShowModal(false);
+      }}
+      className={`sprite-card flex-col  border-2 ${
         state ? "border-blue-600" : "border-gray-300"
-      }  my-2 ml-2 rounded-lg relative hover:border-blue-600 hover:cursor-pointer`}
+      }  my-2 ml-2 w-24 h-28 rounded-lg relative hover:border-blue-600 hover:cursor-pointer`}
     >
-      {state && (
-        <div className="dlt-btn w-fit px-1 absolute right-0 top-0 bg-blue-600 rounded-bl-lg">
-          <Icon size="sm" icon={faXmark} color="white" />
-        </div>
-      )}
       {/* Image */}
-      <div className="image w-fit m-auto mt-1">{image}</div>
+      <div className="image mx-auto w-fit my-2 sm-img">{image}</div>
       <div
         className={`sprite-name ${
           state ? "text-white bg-blue-600" : ""
-        } text-xs mt-1 px-5 py-1`}
+        } text-xs mt-3 mx-auto w-fit`}
       >
         {/* title */}
         {name}
@@ -135,6 +239,54 @@ SpriteCard.protoTypes = {
   image: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   state: PropTypes.bool.isRequired,
+};
+
+let SpriteCardBtn = ({ image, name, id, item }) => {
+  let { sprite, setActiveSprite } = useContext(ActiveSrite);
+  let { list, setSpriteList } = useContext(SpriteList);
+
+  let index = list.indexOf(sprite);
+
+  if (index === -1) {
+    if (list.length) {
+      setActiveSprite(list[0]);
+      setSpriteList(list);
+    } else {
+      setActiveSprite(undefined);
+    }
+  }
+
+  return (
+    <div
+      onClick={() => {
+        setActiveSprite(item);
+      }}
+      className={`sprite-card flex-col  border-2 ${
+        sprite.id === id ? "border-blue-600" : "border-gray-300"
+      }  my-2 ml-2 w-24 h-28 rounded-lg overflow-hidden relative hover:border-blue-600 hover:cursor-pointer`}
+    >
+      {sprite.id === id && (
+        <div
+          onClick={() => {
+            setSpriteList(list.filter((el) => el.id !== id));
+          }}
+          className="dlt-btn w-fit px-1 absolute right-0 top-0 bg-blue-600 rounded-bl-lg"
+        >
+          <Icon size="sm" icon={faXmark} color="white" />
+        </div>
+      )}
+      {/* Image */}
+      <div className="image mx-auto w-fit my-2 sm-img">{image}</div>
+      <div
+        className={`sprite-name ${
+          sprite.id === id ? "text-white bg-blue-600" : ""
+        } text-xs mt-3 py-2 mx-auto w-full text-center`}
+      >
+        {/* title */}
+        {sprite.id === id ? sprite.name : name}
+      </div>
+    </div>
+  );
 };
 
 let Model = ({ setShowModal }) => {
@@ -153,17 +305,19 @@ let Model = ({ setShowModal }) => {
                 <Icon icon={faXmark} />
               </button>
             </div>
-            <div className="relative p-6 flex-auto">
+            <div className="relative px-6 py-4 max-h-96 overflow-scroll">
               {/* body */}
-              <div className="sprites-grid flex">
-                <SpriteCard
-                  image={<CatSprite height={40} width={30} />}
-                  name={"Sprite"}
-                />
-                <SpriteCard
-                  image={<CatSprite height={40} width={30} />}
-                  name={"Sprite"}
-                />
+              <div className="sprites-grid flex flex-wrap justify-between ">
+                {spritesList.map((el, index) => (
+                  <div key={index}>
+                    {" "}
+                    <SpriteCard
+                      image={el}
+                      name={`Sprite-${index + 1}`}
+                      setShowModal={setShowModal}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -179,23 +333,27 @@ Model.protoTypes = {
 
 const SpritesArea = () => {
   const [showModal, setShowModal] = React.useState(false);
+  let { list } = useContext(SpriteList);
 
   return (
-    <div className="sprites-controller relative overflow-hidden  bg-white ml-1.5 mb-4 mt-1.5 mr-4 border border-gray-300 rounded-xl">
+    <div className="sprites-controller relative overflow-hidden bg-white ml-1.5 mb-4 mt-1.5 mr-4 border border-gray-300 rounded-xl">
       {/* header form */}
       <SpritesEditor />
       {/* Sprites List */}
-      <div className="sprites-grid flex">
-        <SpriteCard
-          image={<CatSprite height={40} width={30} />}
-          name={"Sprite"}
-          state={true}
-        />
-        <SpriteCard
-          image={<CatSprite height={40} width={30} />}
-          name={"Sprite"}
-        />
+
+      <div className="sprites-grid flex  flex-wrap  ">
+        {list.map((sprite) => (
+          <div key={sprite.id}>
+            <SpriteCardBtn
+              image={sprite.image}
+              name={sprite.name}
+              id={sprite.id}
+              item={sprite}
+            />
+          </div>
+        ))}
       </div>
+
       {/* model trigger btn */}
       <div
         onClick={() => setShowModal(true)}

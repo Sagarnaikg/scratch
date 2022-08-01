@@ -185,7 +185,7 @@ const MainEditor = () => {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    <Icon icon={faTrash} /> Trash
+                    Drop Here To <Icon className="ml-1" icon={faTrash} />
                   </div>
                 </>
               )}
