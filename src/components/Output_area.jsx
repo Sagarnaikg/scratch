@@ -4,11 +4,15 @@ import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import Icon from "./Others/Icon";
 import { useDrag } from "react-use-gesture";
 import { SpriteList } from "../utils/context-api/sprites_list_context";
-import { ActiveSrite } from "../utils/context-api/active_sprite_context";
+import {
+  ActiveSrite,
+  MotionPins,
+} from "../utils/context-api/active_sprite_context";
 
 const OutputArea = () => {
   let { list, setSpriteList } = useContext(SpriteList);
   let { sprite, setActiveSprite } = useContext(ActiveSrite);
+  const { motionPins, setMotionPins } = useContext(MotionPins);
 
   let dragComponent = useDrag((props) => {
     let index = 0;
@@ -60,6 +64,23 @@ const OutputArea = () => {
             {item.image}
           </div>
         ))}
+        <div className="absolute right-2 top-2 flex-col">
+          {motionPins.x && (
+            <div className="text-xs text-white font-semibold bg-blue-500 py-1 px-1.5 rounded-md">
+              {`x-position ${parseInt(sprite.properties.x)}`}
+            </div>
+          )}
+          {motionPins.y && (
+            <div className="mt-1 text-xs text-white font-semibold bg-blue-500 py-1 px-1.5 rounded-md">
+              {`y-position ${parseInt(sprite.properties.y)}`}
+            </div>
+          )}
+          {motionPins.angle && (
+            <div className="mt-1 text-xs text-white font-semibold bg-blue-500 py-1 px-1.5 rounded-md">
+              {`angle ${parseInt(sprite.properties.angle)}`}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

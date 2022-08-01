@@ -3,7 +3,7 @@ import Pin from "../puzzule_utils/Pin";
 
 const PinXPosition = () => {
   return (
-    <Pin>
+    <Pin id="x">
       <>{"x position"}</>
     </Pin>
   );
@@ -11,7 +11,7 @@ const PinXPosition = () => {
 
 const PinYPosition = () => {
   return (
-    <Pin>
+    <Pin id="y">
       <>{"y position"}</>
     </Pin>
   );
@@ -19,7 +19,7 @@ const PinYPosition = () => {
 
 const PinDirection = () => {
   return (
-    <Pin>
+    <Pin id="angle">
       <>{"direction"}</>
     </Pin>
   );

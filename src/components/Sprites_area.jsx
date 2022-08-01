@@ -105,7 +105,7 @@ let InputField = ({
         <Icon
           size="sm"
           icon={faEyeSlash}
-          color={sprite.properties.display === "hidden" ? "blue" : "gray"}
+          color={sprite.properties.display === "none" ? "blue" : "gray"}
         />
       </div>
     </div>

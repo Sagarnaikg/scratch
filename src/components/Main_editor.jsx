@@ -122,6 +122,13 @@ const MainEditor = () => {
                           )}
                         </Draggable>
                       ))}
+                      <>
+                        {item.pins.map((component, index) => (
+                          <div className="mt-3" key={index}>
+                            {component}
+                          </div>
+                        ))}
+                      </>
                     </div>
                   </div>
                 );

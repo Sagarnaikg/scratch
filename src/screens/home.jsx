@@ -3,7 +3,10 @@ import OutputArea from "../components/Output_area";
 
 import MainEditor from "../components/Main_editor";
 import SpritesArea from "../components/Sprites_area";
-import { ActiveSrite } from "../utils/context-api/active_sprite_context";
+import {
+  ActiveSrite,
+  MotionPins,
+} from "../utils/context-api/active_sprite_context";
 import { SpriteList } from "../utils/context-api/sprites_list_context";
 import {
   defaultActiveSprite,
@@ -13,23 +16,30 @@ import {
 const Home = () => {
   const [spriteList, setSpriteList] = useState([defaultSpriteListValue]);
   const [activeSprite, setActiveSprite] = useState(defaultActiveSprite);
+  const [motionPins, setMotionPins] = useState({
+    x: false,
+    y: false,
+    angle: false,
+  });
 
   return (
-    <SpriteList.Provider
-      value={{ list: spriteList, setSpriteList: setSpriteList }}
-    >
-      <ActiveSrite.Provider
-        value={{ sprite: activeSprite, setActiveSprite: setActiveSprite }}
+    <MotionPins.Provider value={{ motionPins, setMotionPins }}>
+      <SpriteList.Provider
+        value={{ list: spriteList, setSpriteList: setSpriteList }}
       >
-        <div className="bg-blue-100 h-screen flex">
-          <MainEditor />
-          <div className="preview w-1/3 h-full">
-            <OutputArea />
-            <SpritesArea />
+        <ActiveSrite.Provider
+          value={{ sprite: activeSprite, setActiveSprite: setActiveSprite }}
+        >
+          <div className="bg-blue-100 h-screen flex">
+            <MainEditor />
+            <div className="preview w-1/3 h-full">
+              <OutputArea />
+              <SpritesArea />
+            </div>
           </div>
-        </div>
-      </ActiveSrite.Provider>
-    </SpriteList.Provider>
+        </ActiveSrite.Provider>
+      </SpriteList.Provider>
+    </MotionPins.Provider>
   );
 };
 

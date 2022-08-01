@@ -12,9 +12,9 @@ const puzzleList = {
             <MoveXSteps />,
             <TurnXDeg />,
             <TurnAntiXDeg />,
-            <GoTo />,
             <GoToXtoY />,
-            /* pins */
+        ],
+        pins: [
             <PinXPosition />,
             <PinYPosition />,
             <PinDirection />
