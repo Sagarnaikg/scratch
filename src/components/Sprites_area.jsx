@@ -27,9 +27,6 @@ let InputField = ({
   let { list, setSpriteList } = useContext(SpriteList);
   const [value, setValue] = useState("");
 
-  console.log("insize");
-  console.log(sprite.name);
-
   let index = 0;
 
   for (let i = 0; i < list.length; i++) {
@@ -133,9 +130,6 @@ InputField.protoTypes = {
 
 let SpritesEditor = () => {
   let { sprite, setActiveSprite } = useContext(ActiveSrite);
-
-  console.log("editor");
-  console.log(sprite.name);
 
   return (
     <div className="controls h-min bg-blue-200 py-2 px-4">

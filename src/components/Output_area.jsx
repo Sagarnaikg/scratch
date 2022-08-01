@@ -1,25 +1,29 @@
 import React, { useState, useContext } from "react";
 
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
-import CatSprite from "./Others/Cat_sprite";
 import Icon from "./Others/Icon";
 import { useDrag } from "react-use-gesture";
 import { SpriteList } from "../utils/context-api/sprites_list_context";
 import { ActiveSrite } from "../utils/context-api/active_sprite_context";
 
 const OutputArea = () => {
-  let [position, setPosition] = useState({ x: 0, y: 0 });
-
   let { list, setSpriteList } = useContext(SpriteList);
   let { sprite, setActiveSprite } = useContext(ActiveSrite);
 
-  console.log(sprite.properties);
-
   let dragComponent = useDrag((props) => {
-    setPosition({
-      x: props.offset[0],
-      y: props.offset[1],
-    });
+    let index = 0;
+
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === sprite.id) {
+        index = i;
+        break;
+      }
+    }
+
+    list[index].properties.x = props.offset[0];
+    list[index].properties.y = props.offset[1];
+
+    setSpriteList([...list]);
   });
 
   return (
